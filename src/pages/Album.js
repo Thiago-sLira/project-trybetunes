@@ -4,6 +4,7 @@ import Header from '../components/Header';
 import getMusics from '../services/musicsAPI';
 import Carregando from './Carregando';
 import MusicCard from '../components/MusicCard';
+import { getFavoriteSongs } from '../services/favoriteSongsAPI';
 
 class Album extends Component {
   state = {
@@ -17,8 +18,14 @@ class Album extends Component {
   }
 
   fetchGetMusics = async (id) => {
-    const result = await getMusics(id);
-    this.setState({ musics: result, isLoading: false });
+    if (JSON.parse(localStorage.getItem('favorite_songs')).length === 0
+    || !JSON.parse(localStorage.getItem('favorite_songs'))) {
+      const result = await getMusics(id);
+      this.setState({ musics: result, isLoading: false });
+    } else {
+      const result = await getFavoriteSongs();
+      this.setState({ musics: result, isLoading: false });
+    }
   };
 
   render() {

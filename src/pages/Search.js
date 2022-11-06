@@ -43,7 +43,6 @@ class Search extends Component {
       nameArtist: '',
     });
     const result = await searchAlbumsAPI(nameArtist);
-    console.log(result);
     this.setState({ isLoading: false, artist: result, isForm: true });
   };
 
