@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { addSong } from '../services/favoriteSongsAPI';
+import { addSong, removeSong } from '../services/favoriteSongsAPI';
 import Carregando from '../pages/Carregando';
 
 class MusicCard extends Component {
@@ -10,8 +10,16 @@ class MusicCard extends Component {
 
   handleFavoriteChange = async (elem) => {
     this.setState({ isLoading: true });
-    elem.checked = true;
-    await addSong(elem);
+    console.log(elem);
+    if (!JSON.parse(localStorage.getItem('favorite_songs'))
+    || (JSON.parse(localStorage.getItem('favorite_songs')).find((el) => (
+      el.trackId === elem.trackId))) !== undefined) {
+      elem.checked = false;
+      await removeSong(elem);
+    } else {
+      elem.checked = true;
+      await addSong(elem);
+    }
     this.setState({ isLoading: false });
   };
 
@@ -34,10 +42,13 @@ class MusicCard extends Component {
                 <code>audio</code>
                 .
               </audio>
-              <label htmlFor="favorite" data-testid={ `checkbox-music-${elem.trackId}` }>
+              <label
+                htmlFor={ `favorite-${elem.trackId}` }
+                data-testid={ `checkbox-music-${elem.trackId}` }
+              >
                 Favorita
                 <input
-                  id="favorite"
+                  id={ `favorite-${elem.trackId}` }
                   type="checkbox"
                   name="valueFavorite"
                   onChange={ () => this.handleFavoriteChange(elem) }

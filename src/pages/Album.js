@@ -17,19 +17,32 @@ class Album extends Component {
     this.fetchGetMusics(id);
   }
 
+  hadleAPIRequisition = (result, resultFavorites) => {
+    const mapMusics = result.map((music) => {
+      const find = resultFavorites.find((musicFavorite) => (
+        music.trackId === musicFavorite.trackId));
+      if (!find) {
+        music.checked = false;
+        return music;
+      }
+      music.checked = true;
+      return music;
+    });
+    return mapMusics;
+  };
+
   fetchGetMusics = async (id) => {
-    if (JSON.parse(localStorage.getItem('favorite_songs')).length === 0
-    || !JSON.parse(localStorage.getItem('favorite_songs'))) {
-      const result = await getMusics(id);
-      this.setState({ musics: result, isLoading: false });
-    } else {
-      const result = await getFavoriteSongs();
-      this.setState({ musics: result, isLoading: false });
-    }
+    // if (!JSON.parse(localStorage.getItem('favorite_songs'))
+    // || JSON.parse(localStorage.getItem('favorite_songs')).length === 0) {
+    const resultFavorites = await getFavoriteSongs();
+    const result = await getMusics(id);
+    const resultFinalSongs = this.hadleAPIRequisition(result, resultFavorites);
+    this.setState({ musics: resultFinalSongs, isLoading: false });
   };
 
   render() {
     const { musics, isLoading } = this.state;
+    console.log(musics);
     return (
       <div data-testid="page-album">
         <Header />

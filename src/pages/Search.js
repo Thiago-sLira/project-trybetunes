@@ -55,7 +55,7 @@ class Search extends Component {
       <div data-testid="page-search">
         <Header />
         {isForm && (
-          <form onSubmit={ this.hadleButtonClick }>
+          <form>
             <fieldset>
               <legend>Pesquisa</legend>
               <label htmlFor="input-artists">
@@ -69,9 +69,10 @@ class Search extends Component {
                 />
               </label>
               <button
-                type="submit"
+                type="button"
                 data-testid="search-artist-button"
                 disabled={ isLoginButtonDisabled }
+                onClick={ this.hadleButtonClick }
               >
                 Pesquisar
               </button>
@@ -85,7 +86,7 @@ class Search extends Component {
             {nameArtistShow}
           </h4>
         )}
-        {artist.length === 0 ? <h3>Nenhum álbum foi encontrado</h3> : (
+        {artist.length === 0 || !artist.length ? <h3>Nenhum álbum foi encontrado</h3> : (
           <div>
             <ul>
               {artist.map((album) => (
