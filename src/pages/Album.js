@@ -26,14 +26,13 @@ class Album extends Component {
         return music;
       }
       music.checked = true;
+      // music.checked = Boolean(find);
       return music;
     });
     return mapMusics;
   };
 
   fetchGetMusics = async (id) => {
-    // if (!JSON.parse(localStorage.getItem('favorite_songs'))
-    // || JSON.parse(localStorage.getItem('favorite_songs')).length === 0) {
     const resultFavorites = await getFavoriteSongs();
     const result = await getMusics(id);
     const resultFinalSongs = this.hadleAPIRequisition(result, resultFavorites);
@@ -42,7 +41,6 @@ class Album extends Component {
 
   render() {
     const { musics, isLoading } = this.state;
-    console.log(musics);
     return (
       <div data-testid="page-album">
         <Header />

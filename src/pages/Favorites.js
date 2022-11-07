@@ -14,10 +14,6 @@ class Favorites extends Component {
     this.handleFavoriteSongs();
   }
 
-  // componentDidUpdate() {
-  //   this.handleFavoriteSongs();
-  // }
-
   handleFavoriteSongs = async () => {
     const resultFavorites = await getFavoriteSongs();
     this.setState({ favoriteSong: resultFavorites });
