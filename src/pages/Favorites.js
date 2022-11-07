@@ -14,6 +14,10 @@ class Favorites extends Component {
     this.handleFavoriteSongs();
   }
 
+  // componentDidUpdate() {
+  //   this.handleFavoriteSongs();
+  // }
+
   handleFavoriteSongs = async () => {
     const resultFavorites = await getFavoriteSongs();
     this.setState({ favoriteSong: resultFavorites });
@@ -26,7 +30,10 @@ class Favorites extends Component {
         <Header />
         Favorites
         {isLoading ? <Carregando /> : (
-          <MusicCardFavorite favoriteSong={ favoriteSong } />
+          <MusicCardFavorite
+            favoriteSong={ favoriteSong }
+            handleFavoriteSongs={ this.handleFavoriteSongs }
+          />
         )}
       </div>
     );

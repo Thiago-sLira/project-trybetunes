@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { addSong, removeSong } from '../services/favoriteSongsAPI';
+import { removeSong } from '../services/favoriteSongsAPI';
 import Carregando from '../pages/Carregando';
 
 class MusicCardFavorite extends Component {
@@ -8,19 +8,14 @@ class MusicCardFavorite extends Component {
     isLoading: false,
   };
 
-  handleFavoriteChange = async (elem) => {
-    this.setState({ isLoading: true });
-    console.log(elem);
-    if (!JSON.parse(localStorage.getItem('favorite_songs'))
-    || (JSON.parse(localStorage.getItem('favorite_songs')).find((el) => (
-      el.trackId === elem.trackId))) !== undefined) {
+  handleFavoriteChange = (elem) => {
+    const { handleFavoriteSongs } = this.props;
+    this.setState({ isLoading: true }, async () => {
       elem.checked = false;
       await removeSong(elem);
-    } else {
-      elem.checked = true;
-      await addSong(elem);
-    }
-    this.setState({ isLoading: false });
+      await handleFavoriteSongs();
+      this.setState({ isLoading: false });
+    });
   };
 
   render() {
@@ -67,6 +62,7 @@ MusicCardFavorite.propTypes = {
   favoriteSong: PropTypes.arrayOf(PropTypes.shape({
     artistName: PropTypes.string.isRequired,
   })).isRequired,
+  handleFavoriteSongs: PropTypes.func.isRequired,
 };
 
 export default MusicCardFavorite;

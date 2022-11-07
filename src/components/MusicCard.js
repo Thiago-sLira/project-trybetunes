@@ -10,7 +10,6 @@ class MusicCard extends Component {
 
   handleFavoriteChange = async (elem) => {
     this.setState({ isLoading: true });
-    console.log(elem);
     if (!JSON.parse(localStorage.getItem('favorite_songs'))
     || (JSON.parse(localStorage.getItem('favorite_songs')).find((el) => (
       el.trackId === elem.trackId))) !== undefined) {
